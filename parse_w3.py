@@ -1,15 +1,49 @@
-# import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 from bs4 import Tag
-# import networkx as nx
 import requests
+from dataclasses import dataclass
+from typing import List, Optional
+
+@dataclass
+class TreeNode:
+    """
+    A tree node
+    """
+
+    link_name: str # textContent on the link
+    link_href: str # href on the link
+    children: List['TreeNode']
+    secno: Optional[str] # section number, like 1.3
+    depth: int # depth in the tree
+
+    def __str__(self):
+        return self.link_name
 
 
-def extend_tree(toc_ol, G):
+def create_trees(toc_ol, depth=0) -> List[TreeNode]:
+    nodes = []
     for toc_li in toc_ol.find_all("li", class_="tocline", recursive=False):
-        print('  ' * G + toc_li.find("a").text)
+        children = []
         for toc_ol_sub in toc_li.find_all("ol", class_="toc", recursive=False):
-            extend_tree(toc_ol_sub, G + 1)
+            children += create_trees(toc_ol_sub, depth=depth+1)
+
+        toc_a = toc_li.find("a", class_='tocxref', recursive=False)
+        secno = toc_a.find("span", class_='secno')
+        nodes.append(TreeNode(
+            link_name=toc_a.text,
+            link_href=toc_a['href'],
+            children=children,
+            secno=secno.text if isinstance(secno, Tag) else None,
+            depth=depth,
+        ))
+
+    return nodes
+
+
+def print_tree(node: TreeNode, G=0):
+    print('  ' * G + node.link_name)
+    for child in node.children:
+        print_tree(child, G + 1)
 
 
 if __name__ == '__main__':
@@ -18,7 +52,6 @@ if __name__ == '__main__':
     resp.raise_for_status()
     w3_content_html = resp.text
     soup = BeautifulSoup(w3_content_html, "html.parser")
-    # G = nx.DiGraph()
 
     # parse toc, nav id "toc"
     toc_nav = soup.find(id="toc")
@@ -27,9 +60,6 @@ if __name__ == '__main__':
 
     # iterate through sub tables of contents, printing them as a tree
 
-    extend_tree(toc_ol, G=0)
-
-
-    # display the graph
-    # nx.draw(G, with_labels=True)
-    # plt.show()
+    trees = create_trees(toc_ol)
+    for t in trees:
+        print_tree(t)
