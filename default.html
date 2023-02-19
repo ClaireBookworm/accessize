@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <script src="modules/beautifier.js"></script>
+    <script src="node_modules/bottleneck/light.js"></script>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+      }
+      .view {
+        display: none;
+      }
+      .view:target {
+        display: block;
+      }
+      textarea {
+        display: block;
+        width: 60ch;
+        height: 20ch;
+      }
+      .tab {
+        width: 100px;
+        height: 20px;
+        background: lightgray;
+        border-radius: 2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .tab-active {
+        background: gray;
+      }
+      .tabs {
+        display: flex;
+        gap: 4px;
+        margin: 4px 0;
+      }
+      button {
+        background: lightgray;
+        border: none;
+        border-radius: 2px;
+        padding: 4px;
+        margin: 4px;
+      }
+      button:hover {
+        background: gray;
+        cursor: pointer;
+      }
+      #stat {
+        background-color: rgb(239, 175, 25);
+        padding: 4px;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Views depending on state of extension -->
+    <div id="main" class="view">
+      <textarea id="prompt" style="display: none"></textarea>
+      <button id="run-selection">Accesize!</button>
+      <button id="run-clipboard" style="display: none">Run on clipboard</button>
+      <p id="stat">Status: <span id="status">Idle</span></p>
+      <h3 style="display: none">Output</h3>
+      <p id="result" style="display: none">(None so far)</p>
+    </div>
+
+    <div id="login" class="view">
+      <input id="api-key" type="text" placeholder="OpenAI API Key" />
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
