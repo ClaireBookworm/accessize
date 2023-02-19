@@ -10,10 +10,10 @@
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
       body {
-        font-family: "Inter", sans-serif;
-        font-size: 16px;
-        margin: 0;
-        padding: 0;
+        font-family: "Phantom Sans 0.7", "Inter", sans-serif;
+        font-size: 20px;
+        margin: 10px;
+        padding: 10px;
         display: flex;
       }
       #center {
@@ -38,7 +38,7 @@
       }
     </style>
     <div id="center">
-      <div id="tree-head" style="display: none"></div>
+      <div class="tree" id="tree-head"></div>
     </div>
     <script>
       // read tree.json file and store it in a variable
@@ -47,7 +47,7 @@
         res = await res.json();
         console.log(res);
         // create a div element and append to #tree-head
-        function addText(textNode, parent) {
+        function addText(textNode, parent, d) {
           textNode.children = textNode.children.sort(
             (a, b) =>
               parseInt(b.link_name.split(" ")[0].split(".").join("")) -
@@ -55,19 +55,23 @@
           );
           for (let i = 0; i < textNode.children.length; i++) {
             let div = document.createElement("div");
-            div.innerHTML = textNode.children[i].link_name;
+            div.innerHTML = textNode.children[i].summary;
             div.setAttribute("activated", 0);
             div.className = "tree";
+            // div.style.backgroundColor = `hsl(${d * 30}, 100%, 50%)`;
+            div.style.backgroundColor = `rgb(${d * 150}, 220, 220)`;
+            div.style.fontSize = `${20 - d * 2}px`;
             div.onclick = () => {
               if (div.getAttribute("activated") != 1) {
                 div.setAttribute("activated", 1);
-                addText(textNode.children[i], div);
+                addText(textNode.children[i], div, d+1);
               }
             };
             parent.after(div);
           }
         }
-        addText(res, document.getElementById("tree-head"));
+        document.getElementById("tree-head").onclick = () => addText(res, document.getElementById("tree-head"), 0);
+        document.getElementById("tree-head").innerHTML = res.summary;
       })();
     </script>
   </body>

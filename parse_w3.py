@@ -17,7 +17,7 @@ class TreeNode:
     section_text: str # textContent of the section
     children: List['TreeNode']
     secno: Optional[str] # section number, like 1.3
-    depth: int # depth in the tree
+    depth: int # depth in the tree 
 
     def __str__(self):
         return self.link_name
