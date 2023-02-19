@@ -15,5 +15,5 @@ Summary of {paragraphs} paragraphs:"""
 SUMMARIZE_PROMPT_TOKENS = len(tiktoken.get_encoding("cl100k_base").encode(SUMMARIZE_PROMPT))
 ```
 
-The website was generated through HTML where clicks expanded down each "tree" branch. 
+`Tiktoken` embeddings was used in case the input was too large for the model (`davinci-003`) over 2097 tokens. The website was generated through HTML where clicks expanded down each "tree" branch. 
 
