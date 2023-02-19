@@ -24,3 +24,8 @@ a {
     background: black;
   }
 }
+/* remove list style */
+li, ol {
+  padding: 0;
+    list-style-type: none;
+}
