@@ -86,7 +86,11 @@
             div.style.backgroundColor = `rgb(${d * 150}, 220, 220)`;
             div.style.fontSize = `${20 - d * 2}px`;
             div.onclick = () => {
-              if (div.getAttribute("activated") != 1) {
+              if (
+                div.getAttribute("activated") != 1 &&
+                textNode.children[i].children.length > 0
+              ) {
+                div.style.display = "none";
                 div.setAttribute("activated", 1);
                 addText(textNode.children[i], div, d + 1);
               }
@@ -94,9 +98,12 @@
             parent.after(div);
           }
         }
-        document.getElementById("tree-head").onclick = () =>
+        let head = document.getElementById("tree-head");
+        head.onclick = () => {
           addText(res, document.getElementById("tree-head"), 0);
-        document.getElementById("tree-head").innerHTML = res.summary;
+          head.style.display = "none";
+        };
+        head.innerHTML = res.summary;
       })();
     </script>
   </body>
