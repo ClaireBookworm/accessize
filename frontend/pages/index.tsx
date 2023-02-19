@@ -18,7 +18,7 @@ const TreeListView = (t: TreeNode) => {
     <li>
       <a href={t.link_href}>{t.link_name}</a>
       <ol>
-        {t.children.map(tsub => TreeListView(tsub))}
+        -{t.children.map(tsub => TreeListView(tsub))}
       </ol>
     </li>
   )

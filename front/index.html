@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accessorize</title>
+  </head>
+  <body>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        font-size: 16px;
+        margin: 0;
+        padding: 0;
+        display: flex;
+      }
+      #center {
+        margin: auto;
+        width: 70%;
+      }
+      @media screen and (max-width: 800px) {
+        #center {
+          width: 100%;
+          max-width: 100%;
+        }
+      }
+      .tree {
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid black;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      div[activated="1"] {
+        background-color: #f0f0f0;
+      }
+    </style>
+    <div id="center">
+      <div id="tree-head" style="display: none"></div>
+    </div>
+    <script>
+      // read tree.json file and store it in a variable
+      (async () => {
+        let res = await fetch("./tree.json");
+        res = await res.json();
+        console.log(res);
+        // create a div element and append to #tree-head
+        function addText(textNode, parent) {
+          textNode.children = textNode.children.sort(
+            (a, b) =>
+              parseInt(b.link_name.split(" ")[0].split(".").join("")) -
+              parseInt(a.link_name.split(" ")[0].split(".").join(""))
+          );
+          for (let i = 0; i < textNode.children.length; i++) {
+            let div = document.createElement("div");
+            div.innerHTML = textNode.children[i].link_name;
+            div.setAttribute("activated", 0);
+            div.className = "tree";
+            div.onclick = () => {
+              if (div.getAttribute("activated") != 1) {
+                div.setAttribute("activated", 1);
+                addText(textNode.children[i], div);
+              }
+            };
+            parent.after(div);
+          }
+        }
+        addText(res, document.getElementById("tree-head"));
+      })();
+    </script>
+  </body>
+</html>
