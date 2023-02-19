@@ -8,7 +8,25 @@
   </head>
   <body>
     <style>
-      div {
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        font-size: 16px;
+        margin: 0;
+        padding: 0;
+        display: flex;
+      }
+      #center {
+        margin: auto;
+        width: 70%;
+      }
+      @media screen and (max-width: 800px) {
+        #center {
+          width: 100%;
+          max-width: 100%;
+        }
+      }
+      .tree {
         margin: 10px;
         padding: 10px;
         border: 1px solid black;
@@ -19,7 +37,9 @@
         background-color: #f0f0f0;
       }
     </style>
-    <div id="tree-head" style="display: none"></div>
+    <div id="center">
+      <div id="tree-head" style="display: none"></div>
+    </div>
     <script>
       // read tree.json file and store it in a variable
       (async () => {
@@ -37,6 +57,7 @@
             let div = document.createElement("div");
             div.innerHTML = textNode.children[i].link_name;
             div.setAttribute("activated", 0);
+            div.className = "tree";
             div.onclick = () => {
               if (div.getAttribute("activated") != 1) {
                 div.setAttribute("activated", 1);
