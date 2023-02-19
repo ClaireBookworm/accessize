@@ -8,9 +8,9 @@
   </head>
   <body>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
       body {
-        font-family: "Phantom Sans 0.7", "Inter", sans-serif;
+        font-family: "Roboto", sans-serif;
         font-size: 20px;
         margin: 10px;
         padding: 10px;
@@ -30,14 +30,22 @@
         margin: 10px;
         padding: 10px;
         border: 1px solid black;
-        border-radius: 5px;
         cursor: pointer;
       }
       div[activated="1"] {
         background-color: #f0f0f0;
       }
+
+      /* all animations */
+      * {
+        transition: all 0.5s ease;
+      }
     </style>
     <div id="center">
+      <h1>Web Content Accessibility Guidlines (WCAG)</h1>
+      <h3>By Accessize</h3>
+      <p>Bridging accessibility with AI</p>
+
       <div class="tree" id="tree-head"></div>
     </div>
     <script>
@@ -55,7 +63,7 @@
           );
           for (let i = 0; i < textNode.children.length; i++) {
             let div = document.createElement("div");
-            div.innerHTML = textNode.children[i].summary;
+            div.innerHTML = `<h3>${textNode.children[i].link_name}</h3> <p>${textNode.children[i].summary}</p>`;
             div.setAttribute("activated", 0);
             div.className = "tree";
             // div.style.backgroundColor = `hsl(${d * 30}, 100%, 50%)`;
@@ -64,13 +72,14 @@
             div.onclick = () => {
               if (div.getAttribute("activated") != 1) {
                 div.setAttribute("activated", 1);
-                addText(textNode.children[i], div, d+1);
+                addText(textNode.children[i], div, d + 1);
               }
             };
             parent.after(div);
           }
         }
-        document.getElementById("tree-head").onclick = () => addText(res, document.getElementById("tree-head"), 0);
+        document.getElementById("tree-head").onclick = () =>
+          addText(res, document.getElementById("tree-head"), 0);
         document.getElementById("tree-head").innerHTML = res.summary;
       })();
     </script>
